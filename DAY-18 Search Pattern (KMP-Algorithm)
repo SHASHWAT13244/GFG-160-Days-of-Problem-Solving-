@@ -1,0 +1,51 @@
+class Solution {
+  public:
+    vector<int> search(string& pat, string& txt) {
+                int m = pat.size();
+        int n = txt.size();
+        vector<int> lps(m, 0);
+        vector<int> result;
+
+        // Step 1: Compute LPS array for the pattern
+        int len = 0; // length of the previous longest prefix suffix
+        int i = 1; // lps[0] is always 0, so we start from the second character
+        while (i < m) {
+            if (pat[i] == pat[len]) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1]; // Use the previous value in LPS array
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+
+        // Step 2: Search for the pattern in the text using the LPS array
+        i = 0; // Index for txt
+        int j = 0; // Index for pat
+        while (i < n) {
+            if (pat[j] == txt[i]) {
+                i++;
+                j++;
+            }
+            if (j == m) {
+                // Found a match, record the start index
+                result.push_back(i - j);
+                j = lps[j - 1]; // Get the next potential match index from LPS
+            } else if (i < n && pat[j] != txt[i]) {
+                if (j != 0) {
+                    j = lps[j - 1]; // Use LPS array to skip redundant checks
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        return result;
+
+    }
+};
