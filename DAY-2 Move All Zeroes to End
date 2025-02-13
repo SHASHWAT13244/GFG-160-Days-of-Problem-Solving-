@@ -1,0 +1,16 @@
+// User function template for C++
+class Solution {
+  public:
+    void pushZerosToEnd(vector<int>& arr) {
+        int lastNonZeroIndex = 0;  // This will track where the next non-zero element should go
+        
+        // Traverse the array
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr[i] != 0) {
+                // Swap current non-zero element with the element at lastNonZeroIndex
+                swap(arr[lastNonZeroIndex], arr[i]);
+                lastNonZeroIndex++;  // Move to the next position for a non-zero element
+            }
+        }
+    }
+};
